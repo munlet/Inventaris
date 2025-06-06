@@ -171,6 +171,14 @@ $current_section = isset($_GET['section']) ? $_GET['section'] : 'dashboard';
       width: 20px;
     }
 
+    /* Main Content Wrapper */
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
     /* Main Content */
     .main-content {
       flex: 1;
@@ -414,6 +422,62 @@ $current_section = isset($_GET['section']) ? $_GET['section'] : 'dashboard';
       border-bottom: none;
     }
 
+    /* Footer Styling */
+    .footer {
+      margin-top: auto;
+      background: linear-gradient(135deg, #2E5BBA 0%, #4A90E2 100%);
+      color: white;
+      padding: 40px 30px 20px;
+      border-radius: 20px 20px 0 0;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+
+    .footer-section h3 {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #87CEEB;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-section p {
+      margin-bottom: 8px;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .footer-section a {
+      color: #87CEEB;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-section a:hover {
+      color: #E6F3FF;
+      text-decoration: underline;
+    }
+
+    .footer-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+      margin: 20px 0;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
       .dashboard-container {
@@ -441,6 +505,15 @@ $current_section = isset($_GET['section']) ? $_GET['section'] : 'dashboard';
       
       .form-grid {
         grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      
+      .footer {
+        padding: 30px 20px 15px;
       }
     }
 
@@ -515,181 +588,207 @@ $current_section = isset($_GET['section']) ? $_GET['section'] : 'dashboard';
       </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <!-- Header -->
-      <div class="header">
-        <h1 class="header-title">Dashboard Inventaris</h1>
-        <div class="header-time">
-          <i class="fas fa-clock"></i>
-          <span id="current-time"></span>
-        </div>
-      </div>
-
-      <!-- Dashboard Section -->
-      <?php if ($current_section == 'dashboard'): ?>
-      <section id="dashboard-section">
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon total">
-              <i class="fas fa-boxes"></i>
-            </div>
-            <div class="stat-number"><?= $total_barang ?></div>
-            <div class="stat-label">Total Barang</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon good">
-              <i class="fas fa-check-circle"></i>
-            </div>
-            <div class="stat-number"><?= $barang_baik ?></div>
-            <div class="stat-label">Barang Baik</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon damaged">
-              <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <div class="stat-number"><?= $barang_rusak ?></div>
-            <div class="stat-label">Barang Rusak</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-icon category">
-              <i class="fas fa-tags"></i>
-            </div>
-            <div class="stat-number"><?= $total_kategori ?></div>
-            <div class="stat-label">Kategori</div>
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <div class="header">
+          <h1 class="header-title">Dashboard Inventaris</h1>
+          <div class="header-time">
+            <i class="fas fa-clock"></i>
+            <span id="current-time"></span>
           </div>
         </div>
-      </section>
-      <?php endif; ?>
 
-      <!-- Add Item Form -->
-      <?php if ($user['role'] === 'Admin' && $current_section == 'tambah-barang'): ?>
-      <section id="tambah-barang-section">
-        <div class="form-card">
-          <div class="form-header">
-            <i class="fas fa-plus-circle"></i>
-            Tambah Barang Baru
-          </div>
-          <div class="form-body">
-            <form method="POST" action="../store.php">
-              <div class="form-grid">
-                <div class="form-group">
-                  <label class="form-label">Nama Barang</label>
-                  <input type="text" name="nama_barang" class="form-control" placeholder="Masukkan nama barang" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Kode Barang</label>
-                  <input type="text" name="kode_barang" class="form-control" placeholder="Masukkan kode barang" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Jumlah</label>
-                  <input type="number" name="jumlah" class="form-control" placeholder="Masukkan jumlah" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Tanggal Masuk</label>
-                  <input type="date" name="tanggal_masuk" class="form-control" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Status Barang</label>
-                  <select name="status_barang" class="form-control" required>
-                    <option value="">-- Pilih Status --</option>
-                    <option value="Baik">Baik</option>
-                    <option value="Rusak">Rusak</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Kategori</label>
-                  <select name="ID_kategori" class="form-control" required>
-                    <option value="">-- Pilih Kategori --</option>
-                    <?php 
-                    mysqli_data_seek($kategori, 0);
-                    while ($k = mysqli_fetch_assoc($kategori)): ?>
-                      <option value="<?= $k['ID_kategori'] ?>"><?= $k['nama_kategori'] ?></option>
-                    <?php endwhile; ?>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Ruangan</label>
-                  <select name="ID_ruangan" class="form-control" required>
-                    <option value="">-- Pilih Ruangan --</option>
-                    <?php 
-                    mysqli_data_seek($ruangan, 0);
-                    while ($r = mysqli_fetch_assoc($ruangan)): ?>
-                      <option value="<?= $r['ID_ruangan'] ?>"><?= $r['nama_ruangan'] ?></option>
-                    <?php endwhile; ?>
-                  </select>
-                </div>
+        <!-- Dashboard Section -->
+        <?php if ($current_section == 'dashboard'): ?>
+        <section id="dashboard-section">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon total">
+                <i class="fas fa-boxes"></i>
               </div>
-              <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i>
-                Simpan Barang
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
-      <?php endif; ?>
+              <div class="stat-number"><?= $total_barang ?></div>
+              <div class="stat-label">Total Barang</div>
+            </div>
 
-      <!-- Items List -->
-      <?php if ($current_section == 'daftar-barang'): ?>
-      <section id="daftar-barang-section">
-        <div class="table-card">
-          <div class="table-header">
-            <i class="fas fa-list"></i>
-            Daftar Barang Inventaris
+            <div class="stat-card">
+              <div class="stat-icon good">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="stat-number"><?= $barang_baik ?></div>
+              <div class="stat-label">Barang Baik</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon damaged">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="stat-number"><?= $barang_rusak ?></div>
+              <div class="stat-label">Barang Rusak</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon category">
+                <i class="fas fa-tags"></i>
+              </div>
+              <div class="stat-number"><?= $total_kategori ?></div>
+              <div class="stat-label">Kategori</div>
+            </div>
           </div>
-          <div class="table-container">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th><i class="fas fa-box"></i> Nama Barang</th>
-                  <th><i class="fas fa-barcode"></i> Kode</th>
-                  <th><i class="fas fa-sort-numeric-up"></i> Jumlah</th>
-                  <th><i class="fas fa-calendar"></i> Tanggal Masuk</th>
-                  <th><i class="fas fa-tag"></i> Kategori</th>
-                  <th><i class="fas fa-map-marker-alt"></i> Ruangan</th>
-                  <th><i class="fas fa-info-circle"></i> Status</th>
-                  <?php if ($user['role'] === 'Admin'): ?><th><i class="fas fa-cogs"></i> Aksi</th><?php endif; ?>
-                </tr>
-              </thead>
-              <tbody>
-                <?php 
-                mysqli_data_seek($barang, 0);
-                while ($b = mysqli_fetch_assoc($barang)): ?>
+        </section>
+        <?php endif; ?>
+
+        <!-- Add Item Form -->
+        <?php if ($user['role'] === 'Admin' && $current_section == 'tambah-barang'): ?>
+        <section id="tambah-barang-section">
+          <div class="form-card">
+            <div class="form-header">
+              <i class="fas fa-plus-circle"></i>
+              Tambah Barang Baru
+            </div>
+            <div class="form-body">
+              <form method="POST" action="../store.php">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label">Nama Barang</label>
+                    <input type="text" name="nama_barang" class="form-control" placeholder="Masukkan nama barang" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Kode Barang</label>
+                    <input type="text" name="kode_barang" class="form-control" placeholder="Masukkan kode barang" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Jumlah</label>
+                    <input type="number" name="jumlah" class="form-control" placeholder="Masukkan jumlah" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Tanggal Masuk</label>
+                    <input type="date" name="tanggal_masuk" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Status Barang</label>
+                    <select name="status_barang" class="form-control" required>
+                      <option value="">-- Pilih Status --</option>
+                      <option value="Baik">Baik</option>
+                      <option value="Rusak">Rusak</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Kategori</label>
+                    <select name="ID_kategori" class="form-control" required>
+                      <option value="">-- Pilih Kategori --</option>
+                      <?php 
+                      mysqli_data_seek($kategori, 0);
+                      while ($k = mysqli_fetch_assoc($kategori)): ?>
+                        <option value="<?= $k['ID_kategori'] ?>"><?= $k['nama_kategori'] ?></option>
+                      <?php endwhile; ?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Ruangan</label>
+                    <select name="ID_ruangan" class="form-control" required>
+                      <option value="">-- Pilih Ruangan --</option>
+                      <?php 
+                      mysqli_data_seek($ruangan, 0);
+                      while ($r = mysqli_fetch_assoc($ruangan)): ?>
+                        <option value="<?= $r['ID_ruangan'] ?>"><?= $r['nama_ruangan'] ?></option>
+                      <?php endwhile; ?>
+                    </select>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save"></i>
+                  Simpan Barang
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+        <?php endif; ?>
+
+        <!-- Items List -->
+        <?php if ($current_section == 'daftar-barang'): ?>
+        <section id="daftar-barang-section">
+          <div class="table-card">
+            <div class="table-header">
+              <i class="fas fa-list"></i>
+              Daftar Barang Inventaris
+            </div>
+            <div class="table-container">
+              <table class="table">
+                <thead>
                   <tr>
-                    <td><strong><?= htmlspecialchars($b['nama_barang']) ?></strong></td>
-                    <td><code><?= htmlspecialchars($b['kode_barang']) ?></code></td>
-                    <td><span class="badge" style="background: #4A90E2; color: white; padding: 5px 10px; border-radius: 15px;"><?= $b['jumlah'] ?></span></td>
-                    <td><?= date('d/m/Y', strtotime($b['tanggal_masuk'])) ?></td>
-                    <td><?= htmlspecialchars($b['nama_kategori']) ?></td>
-                    <td><?= htmlspecialchars($b['nama_ruangan']) ?></td>
-                    <td>
-                      <span class="badge" style="background: <?= $b['status_barang'] == 'Baik' ? '#28a745' : '#dc3545' ?>; color: white; padding: 5px 10px; border-radius: 15px;">
-                        <?= $b['status_barang'] ?>
-                      </span>
-                    </td>
-                    <?php if ($user['role'] === 'Admin'): ?>
-                    <td>
-                      <a href="../edit.php?id=<?= $b['ID_barang'] ?>" class="btn btn-warning btn-sm">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a href="../delete.php?id=<?= $b['ID_barang'] ?>" onclick="return confirm('Yakin ingin hapus?')" class="btn btn-danger btn-sm">
-                        <i class="fas fa-trash"></i>
-                      </a>
-                    </td>
-                    <?php endif; ?>
+                    <th><i class="fas fa-box"></i> Nama Barang</th>
+                    <th><i class="fas fa-barcode"></i> Kode</th>
+                    <th><i class="fas fa-sort-numeric-up"></i> Jumlah</th>
+                    <th><i class="fas fa-calendar"></i> Tanggal Masuk</th>
+                    <th><i class="fas fa-tag"></i> Kategori</th>
+                    <th><i class="fas fa-map-marker-alt"></i> Ruangan</th>
+                    <th><i class="fas fa-info-circle"></i> Status</th>
+                    <?php if ($user['role'] === 'Admin'): ?><th><i class="fas fa-cogs"></i> Aksi</th><?php endif; ?>
                   </tr>
-                <?php endwhile; ?>
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  <?php 
+                  mysqli_data_seek($barang, 0);
+                  while ($b = mysqli_fetch_assoc($barang)): ?>
+                    <tr>
+                      <td><strong><?= htmlspecialchars($b['nama_barang']) ?></strong></td>
+                      <td><code><?= htmlspecialchars($b['kode_barang']) ?></code></td>
+                      <td><span class="badge" style="background: #4A90E2; color: white; padding: 5px 10px; border-radius: 15px;"><?= $b['jumlah'] ?></span></td>
+                      <td><?= date('d/m/Y', strtotime($b['tanggal_masuk'])) ?></td>
+                      <td><?= htmlspecialchars($b['nama_kategori']) ?></td>
+                      <td><?= htmlspecialchars($b['nama_ruangan']) ?></td>
+                      <td>
+                        <span class="badge" style="background: <?= $b['status_barang'] == 'Baik' ? '#28a745' : '#dc3545' ?>; color: white; padding: 5px 10px; border-radius: 15px;">
+                          <?= $b['status_barang'] ?>
+                        </span>
+                      </td>
+                      <?php if ($user['role'] === 'Admin'): ?>
+                      <td>
+                        <a href="../edit.php?id=<?= $b['ID_barang'] ?>" class="btn btn-warning btn-sm">
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="../delete.php?id=<?= $b['ID_barang'] ?>" onclick="return confirm('Yakin ingin hapus?')" class="btn btn-danger btn-sm">
+                          <i class="fas fa-trash"></i>
+                        </a>
+                      </td>
+                      <?php endif; ?>
+                    </tr>
+                  <?php endwhile; ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        <?php endif; ?>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3><i class="fas fa-school"></i> SMKN 2</h3>
+            <p><strong>SMK NEGERI 2 BANDUNG</strong></p>
+            <p>Jl. Ciliwung No.4 Kelurahan Cihapit</p>
+            <p>Kecamatan Bandung Wetan, Kota Bandung</p>
+            <p><i class="fas fa-envelope"></i> <a href="mailto:humas@smkn2bandung.sch.id">humas@smkn2bandung.sch.id</a></p>
+          </div>
+          <div class="footer-section">
+            <h3><i class="fas fa-user"></i> Personal Contact</h3>
+            <p><i class="fas fa-envelope"></i> <a href="mailto:khalishaagmy1805@gmail.com">khalishaagmy1805@gmail.com</a></p>
+            <p><i class="fas fa-envelope"></i> <a href="mailto:munletsesat@gmail.com">munletsesat@gmail.com</a></p>
+            <p><i class="fab fa-instagram"></i> <a href="https://www.instagram.com/munletsesat/" target="_blank">@munletsesat</a></p>
           </div>
         </div>
-      </section>
-      <?php endif; ?>
-    </main>
+        <div class="footer-divider"></div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 SMK Negeri 2 Bandung - Sistem Inventaris Barang</p>
+        </div>
+      </footer>
+    </div>
   </div>
 
   <script>
